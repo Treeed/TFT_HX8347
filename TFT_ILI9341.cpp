@@ -291,7 +291,7 @@ void TFT_ILI9341::init(void)
     0x28, 1+DELAY, 0x38, 40, //GON=1, DTE=1, D=1000
     0x28, 1, 0x3C, //GON=1, DTE=1, D=1100
 
-    0x16, 1, 0x08, // MY=0, MX=0, MV=0, BGR=1
+    HX8347_MEM_ACC_CTRL, 1, HX8347_MEM_ACC_CTRL_BGR, // MY=0, MX=0, MV=0, BGR=1
 	};
 
 	commandList(ILI9341_cmds);
