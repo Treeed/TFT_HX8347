@@ -226,54 +226,72 @@ void TFT_ILI9341::init(void)
 	// Initialization commands for ILI9341 screens
 	static const uint8_t ILI9341_cmds[] PROGMEM =
 	{
-		#if (TFT_RST > 0)
-		  21,
-		#else
-		  22,
-		  ILI9341_SWRESET, HX8347_INIT_DELAY,       // 1
-		  5,
-		#endif
-		0xEF, 3,                        // 2
-		0x03, 0x80, 0x02,
-		0xCF, 3,                        // 3
-		0x00, 0xC1, 0x30,
-		0xED, 4,                        // 4
-		0x64, 0x03, 0x12, 0x81,
-		0xE8, 3,                        // 5
-		0x85, 0x00, 0x78,
-		0xCB, 5,                        // 6
-		0x39, 0x2C, 0x00, 0x34, 0x02,
-		0xF7, 1,                        // 7
-		0x20,
-		0xEA, 2,                        // 8
-		0x00, 0x00,
-		ILI9341_PWCTR1, 1,              // 9 power control 
-		0x23,                           // VRH[5:0] 
-		ILI9341_PWCTR2, 1,              // 10 power control 
-		0x10,                           // SAP[2:0];BT[3:0]  
-		ILI9341_VMCTR1, 2,              // 11 VCM control 
-		0x3e, 0x28,
-		ILI9341_VMCTR2, 1,              // 12 VCM control2 
-		0x86,                           // --
-		ILI9341_MADCTL, 1,              // 13
-                (ILI9341_MADCTL_MX | ILI9341_MADCTL_BGR),
-                ILI9341_PIXFMT, 1,              // 14
-                0x55,
-                ILI9341_FRMCTR1, 2,             // 15
-                0x00, 0x18,
-                ILI9341_DFUNCTR, 3,             // 16
-                0x08, 0x82, 0x27,
-                0xF2, 1,                        // 17 3Gamma Function Disable 
-                0x00,
-                ILI9341_GAMMASET, 1,            // 18 Gamma curve selected 
-                0x01,
-		ILI9341_GMCTRP1, 15,            // 19 Set Gamma 
-		0x0F, 0x31, 0x2B, 0x0C, 0x0E, 0x08, 0x4E, 0xF1, 0x37, 0x07, 0x10, 0x03, 0x0E, 0x09, 0x00,
-		ILI9341_GMCTRN1, 15,            // 20
-		0x00, 0x0E, 0x14, 0x03, 0x11, 0x07, 0x31, 0xC1, 0x48, 0x08, 0x0F, 0x0C, 0x31, 0x36, 0x0F,
-		ILI9341_SLPOUT, HX8347_INIT_DELAY,          // 21
-		120,
-		ILI9341_DISPON, 0,              // 22
+    //init commands taken from waveshare lib
+		52,
+		0xEA, 1, 0x00, //PTBA[15:8]
+    0xEB, 1, 0x20, //PTBA[7:0]
+    0xEC, 1, 0x0C, //STBA[15:8]
+    0xED, 1, 0xC4, //STBA[7:0]
+    0xE8, 1, 0x40, //OPON[7:0]
+    0xE9, 1, 0x38, //OPON1[7:0]
+    0xF1, 1, 0x01, //OTPS1B
+    0xF2, 1, 0x10, //GEN
+    0x27, 1, 0xA3,
+
+    //Gamma 2.2 Setting
+    0x40, 1, 0x01, //
+    0x41, 1, 0x00, //
+    0x42, 1, 0x00, //
+    0x43, 1, 0x10, //
+    0x44, 1, 0x0E, //
+    0x45, 1, 0x24, //
+    0x46, 1, 0x04, //
+    0x47, 1, 0x50, //
+    0x48, 1, 0x02, //
+    0x49, 1, 0x13, //
+    0x4A, 1, 0x19, //
+    0x4B, 1, 0x19, //
+    0x4C, 1, 0x16, //
+    0x50, 1, 0x1B, //
+    0x51, 1, 0x31, //
+    0x52, 1, 0x2F, //
+    0x53, 1, 0x3F, //
+    0x54, 1, 0x3F, //
+    0x55, 1, 0x3E, //
+    0x56, 1, 0x2F, //
+    0x57, 1, 0x7B, //
+    0x58, 1, 0x09, //
+    0x59, 1, 0x06, //
+    0x5A, 1, 0x06, //
+    0x5B, 1, 0x0C, //
+    0x5C, 1, 0x1D, //
+    0x5D, 1, 0xCC, //
+
+    //Power Voltage Setting
+    0x1B, 1, 0x1B, //VRH=4.65V
+    0x1A, 1, 0x01, //BT (VGH~15V,VGL~-10V,DDVDH~5V)
+    0x24, 1, 0x15, //VMH(VCOM High voltage ~3.2V)
+    0x25, 1, 0x50, //VML(VCOM Low voltage -1.2V)
+
+    0x23, 1, 0x88, //for Flicker adjust //can reload from OTP
+    //Power on Setting
+
+    0x18, 1, 0x36, // I/P_RADJ,N/P_RADJ, Normal mode 60Hz
+    0x19, 1, 0x01, //OSC_EN='1', start Osc
+    0x01, 1, 0x00, //DP_STB='0', out deep sleep
+    0x1F, 1+DELAY, 0x88, 5,// GAS=1, VOMG=00, PON=0, DK=1, XDK=0, DVDH_TRI=0, STB=0
+    0x1F, 1+DELAY, 0x80, 5,// GAS=1, VOMG=00, PON=0, DK=0, XDK=0, DVDH_TRI=0, STB=0
+    0x1F, 1+DELAY, 0x90, 5,// GAS=1, VOMG=00, PON=1, DK=0, XDK=0, DVDH_TRI=0, STB=0
+    0x1F, 1+DELAY, 0xD0, 5,// GAS=1, VOMG=10, PON=1, DK=0, XDK=0, DDVDH_TRI=0, STB=0
+    //262k/65k color selection
+    0x17, 1, 0x05, //default 0x06 262k color // 0x05 65k color
+    //SET PANEL
+    0x36, 1, 0x00, //SS_P, GS_P,REV_P,BGR_P
+    //Display ON Setting
+    0x28, 1+DELAY, 0x38, 40, //GON=1, DTE=1, D=1000
+    0x28, 1, 0x3C, //GON=1, DTE=1, D=1100
+
+    0x16, 1, 0x08, // MY=0, MX=0, MV=0, BGR=1
 	};
 
 	commandList(ILI9341_cmds);
