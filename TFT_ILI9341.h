@@ -114,6 +114,16 @@ swap(T& a, T& b) { T t = a; a = b; b = t; }
 
 #define HX8347_GRAM_WRITE   0x22
 
+//Masks for bit access
+#define HX8347_MEM_ACC_CTRL_MY (1<<7)
+#define HX8347_MEM_ACC_CTRL_MX (1<<6)
+#define HX8347_MEM_ACC_CTRL_MV (1<<5)
+#define HX8347_MEM_ACC_CTRL_ML (1<<4)
+#define HX8347_MEM_ACC_CTRL_BGR (1<<3)
+
+
+#define HX8347_DISP_MODE_INV   (1<<1)
+
 
 // New color definitions use for all my libraries
 #define TFT_BLACK       0x0000      /*   0,   0,   0 */

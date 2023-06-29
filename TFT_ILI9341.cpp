@@ -1558,46 +1558,46 @@ void TFT_ILI9341::setRotation(uint8_t m)
 {
   rotation = m % 8;
   spi_begin();
-  writecommand(ILI9341_MADCTL);
+  writecommand(HX8347_MEM_ACC_CTRL);
   switch (rotation) {
     case 0:
-      writedata(ILI9341_MADCTL_MX | ILI9341_MADCTL_BGR);
+      writedata(HX8347_MEM_ACC_CTRL_MX | HX8347_MEM_ACC_CTRL_BGR);
       _width  = HX8347_TFTWIDTH;
       _height = HX8347_TFTHEIGHT;
       break;
     case 1:
-      writedata(ILI9341_MADCTL_MV | ILI9341_MADCTL_BGR);
+      writedata(HX8347_MEM_ACC_CTRL_MV | HX8347_MEM_ACC_CTRL_BGR);
       _width  = HX8347_TFTHEIGHT;
       _height = HX8347_TFTWIDTH;
       break;
     case 2:
-      writedata(ILI9341_MADCTL_MY | ILI9341_MADCTL_BGR);
+      writedata(HX8347_MEM_ACC_CTRL_MY | HX8347_MEM_ACC_CTRL_BGR);
       _width  = HX8347_TFTWIDTH;
       _height = HX8347_TFTHEIGHT;
       break;
     case 3:
-      writedata(ILI9341_MADCTL_MX | ILI9341_MADCTL_MY | ILI9341_MADCTL_MV | ILI9341_MADCTL_BGR);
+      writedata(HX8347_MEM_ACC_CTRL_MX | HX8347_MEM_ACC_CTRL_MY | HX8347_MEM_ACC_CTRL_MV | HX8347_MEM_ACC_CTRL_BGR);
       _width  = HX8347_TFTHEIGHT;
       _height = HX8347_TFTWIDTH;
       break;
   // These next rotations are for bottum up BMP drawing
     case 4:
-      writedata(ILI9341_MADCTL_MX | ILI9341_MADCTL_MY | ILI9341_MADCTL_BGR);
+      writedata(HX8347_MEM_ACC_CTRL_MX | HX8347_MEM_ACC_CTRL_MY | HX8347_MEM_ACC_CTRL_BGR);
       _width  = HX8347_TFTWIDTH;
       _height = HX8347_TFTHEIGHT;
       break;
     case 5:
-      writedata(ILI9341_MADCTL_MV | ILI9341_MADCTL_MX | ILI9341_MADCTL_BGR);
+      writedata(HX8347_MEM_ACC_CTRL_MV | HX8347_MEM_ACC_CTRL_MX | HX8347_MEM_ACC_CTRL_BGR);
       _width  = HX8347_TFTHEIGHT;
       _height = HX8347_TFTWIDTH;
       break;
     case 6:
-      writedata(ILI9341_MADCTL_BGR);
+      writedata(HX8347_MEM_ACC_CTRL_BGR);
       _width  = HX8347_TFTWIDTH;
       _height = HX8347_TFTHEIGHT;
       break;
     case 7:
-      writedata(ILI9341_MADCTL_MY | ILI9341_MADCTL_MV | ILI9341_MADCTL_BGR);
+      writedata(HX8347_MEM_ACC_CTRL_MY | HX8347_MEM_ACC_CTRL_MV | HX8347_MEM_ACC_CTRL_BGR);
       _width  = HX8347_TFTHEIGHT;
       _height = HX8347_TFTWIDTH;
       break;
@@ -1619,9 +1619,8 @@ void TFT_ILI9341::setRotation(uint8_t m)
 void TFT_ILI9341::invertDisplay(boolean i)
 {
   spi_begin();
-  // Send the command twice as otherwise it does not always work!
-  writecommand(i ? ILI9341_INVON : ILI9341_INVOFF);
-  writecommand(i ? ILI9341_INVON : ILI9341_INVOFF);
+  writecommand(HX8347_DISP_MODE);
+  writedata(i ? HX8347_DISP_MODE_INV : 0)
   spi_end();
 }
 
