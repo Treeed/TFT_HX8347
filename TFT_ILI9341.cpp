@@ -1014,44 +1014,6 @@ void TFT_ILI9341::setAddrWindow(int16_t x0, int16_t y0, int16_t x1, int16_t y1)
 
 }
 
-/*
-void TFT_ILI9341::setAddrWindow(int16_t x0, int16_t y0, int16_t x1, int16_t y1)
-{
-  spi_begin();
-
-  // Column addr set
-  TFT_DC_C;
-  TFT_CS_L;
-  SPDR = ILI9341_CASET;
-  spiWait15();
-
-  TFT_DC_D;
-  SPDR = x0 >> 8; spiWait17();
-  SPDR = x0; spiWait17();
-  SPDR = x1 >> 8; spiWait17();
-  SPDR = x1; spiWait14();
-
-  // Row addr set
-  TFT_DC_C;
-  SPDR = ILI9341_PASET; spiWait15();
-
-  TFT_DC_D;
-  SPDR = y0 >> 8; spiWait17();
-  SPDR = y0; spiWait17();
-  SPDR = y1 >> 8; spiWait17();
-  SPDR = y1; spiWait14();
-
-  // write to RAM
-  TFT_DC_C;
-  SPDR = ILI9341_RAMWR; spiWait14();
-
-  //CS, HIGH;
-  //TFT_CS_H;
-  TFT_DC_D;
-
-  spi_end();
-}
-*/
 /***************************************************************************************
 ** Function name:           drawPixel
 ** Description:             push a single pixel at an arbitrary position
@@ -1184,52 +1146,6 @@ void TFT_ILI9341::fastSetup(void)
   spi_end();
 }
 
-/*
-void TFT_ILI9341::drawPixel(uint16_t x, uint16_t y, uint16_t color)
-{
-  // Faster range checking, possible because x and y are unsigned
-  if ((x >= _width) || (y >= _height)) return;
-  spi_begin();
-
-  // Column addr set
-  TFT_DC_C;
-  TFT_CS_L;
-  SPDR = ILI9341_CASET;
-  spiWait15();
-
-  TFT_DC_D;
-  SPDR = x >> 8; spiWait17();
-  SPDR = x; spiWait15(); x++; 
-  SPDR = x >> 8; spiWait17();
-  SPDR = x; spiWait14();
-
-  // Row addr set
-  TFT_DC_C;
-  //TFT_CS_L;
-  SPDR = ILI9341_PASET; spiWait15();
-
-  TFT_DC_D;
-  SPDR = y >> 8; spiWait17();
-  SPDR = y; spiWait15(); y++; 
-  SPDR = y >> 8; spiWait17();
-  SPDR = y; spiWait14();
-
-  // write to RAM
-  TFT_DC_C;
-  SPDR = ILI9341_RAMWR; spiWait15();
-
-  TFT_DC_D;
-
-  SPDR = color >> 8; spiWait17();
-  SPDR = color; spiWait14();
-
-  //CS, HIGH;
-  TFT_CS_H;
-  //TFT_DC_D;
-
-  spi_end();
-}
-*/
 
 /***************************************************************************************
 ** Function name:           pushColor
