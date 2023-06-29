@@ -1350,13 +1350,13 @@ void TFT_ILI9341::drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint1
   spi_begin();
 
   int8_t steep = abs(y1 - y0) > abs(x1 - x0);
-  int16_t xmax = _width, ymax = _height;
+  int16_t xmax = _width-1, ymax = _height-1;
 
 	if (steep) {
 		swap(x0, y0);
 		swap(x1, y1);
-           ymax = _width;
-           xmax = _height;
+           ymax = _width-1;
+           xmax = _height-1;
 	}
 
 	if (x0 > x1) {
@@ -1373,7 +1373,7 @@ void TFT_ILI9341::drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint1
 	int16_t err = dx / 2;
 	int8_t ystep = (y0 < y1) ? 1 : (-1);
 
-	if (x1 >= xmax) x1 = xmax - 1;
+	if (x1 >= xmax) x1 = xmax;
 
 	for (; x0 <= x1; x0++) {
 		if ((x0 >= 0) && (y0 >= 0) && (y0 < ymax)) break;
