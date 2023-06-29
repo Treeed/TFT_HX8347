@@ -23,6 +23,8 @@
 #include "wiring_private.h"
 #include <SPI.h>
 
+
+inline void gramWrite(void) __attribute__((always_inline));
 inline void spiWait17(void) __attribute__((always_inline));
 inline void spiWait15(void) __attribute__((always_inline));
 inline void spiWait14(void) __attribute__((always_inline));
@@ -197,6 +199,8 @@ void TFT_ILI9341::begin(void)
 ** Function name:           init
 ** Description:             Reset, then initialise the TFT display registers
 ***************************************************************************************/
+#define DELAY 0x80
+
 void TFT_ILI9341::init(void)
 {
   SPI.begin();
@@ -226,7 +230,7 @@ void TFT_ILI9341::init(void)
 		  21,
 		#else
 		  22,
-		  ILI9341_SWRESET, ILI9341_INIT_DELAY,       // 1
+		  ILI9341_SWRESET, HX8347_INIT_DELAY,       // 1
 		  5,
 		#endif
 		0xEF, 3,                        // 2
@@ -267,7 +271,7 @@ void TFT_ILI9341::init(void)
 		0x0F, 0x31, 0x2B, 0x0C, 0x0E, 0x08, 0x4E, 0xF1, 0x37, 0x07, 0x10, 0x03, 0x0E, 0x09, 0x00,
 		ILI9341_GMCTRN1, 15,            // 20
 		0x00, 0x0E, 0x14, 0x03, 0x11, 0x07, 0x31, 0xC1, 0x48, 0x08, 0x0F, 0x0C, 0x31, 0x36, 0x0F,
-		ILI9341_SLPOUT, ILI9341_INIT_DELAY,          // 21
+		ILI9341_SLPOUT, HX8347_INIT_DELAY,          // 21
 		120,
 		ILI9341_DISPON, 0,              // 22
 	};
@@ -290,8 +294,8 @@ void TFT_ILI9341::commandList (const uint8_t *addr)
 	{
 		writecommand(pgm_read_byte(addr++));    // Read, issue command
 		numArgs = pgm_read_byte(addr++);        // Number of args to follow
-		ms = numArgs & ILI9341_INIT_DELAY;      // If hibit set, delay follows args
-		numArgs &= ~ILI9341_INIT_DELAY;         // Mask out delay bit
+		ms = numArgs & HX8347_INIT_DELAY;      // If hibit set, delay follows args
+		numArgs &= ~HX8347_INIT_DELAY;         // Mask out delay bit
 		while (numArgs--)                       // For each argument...
 		{
 			writedata(pgm_read_byte(addr++)); // Read, issue argument
@@ -1546,44 +1550,44 @@ void TFT_ILI9341::setRotation(uint8_t m)
   switch (rotation) {
     case 0:
       writedata(ILI9341_MADCTL_MX | ILI9341_MADCTL_BGR);
-      _width  = ILI9341_TFTWIDTH;
-      _height = ILI9341_TFTHEIGHT;
+      _width  = HX8347_TFTWIDTH;
+      _height = HX8347_TFTHEIGHT;
       break;
     case 1:
       writedata(ILI9341_MADCTL_MV | ILI9341_MADCTL_BGR);
-      _width  = ILI9341_TFTHEIGHT;
-      _height = ILI9341_TFTWIDTH;
+      _width  = HX8347_TFTHEIGHT;
+      _height = HX8347_TFTWIDTH;
       break;
     case 2:
       writedata(ILI9341_MADCTL_MY | ILI9341_MADCTL_BGR);
-      _width  = ILI9341_TFTWIDTH;
-      _height = ILI9341_TFTHEIGHT;
+      _width  = HX8347_TFTWIDTH;
+      _height = HX8347_TFTHEIGHT;
       break;
     case 3:
       writedata(ILI9341_MADCTL_MX | ILI9341_MADCTL_MY | ILI9341_MADCTL_MV | ILI9341_MADCTL_BGR);
-      _width  = ILI9341_TFTHEIGHT;
-      _height = ILI9341_TFTWIDTH;
+      _width  = HX8347_TFTHEIGHT;
+      _height = HX8347_TFTWIDTH;
       break;
   // These next rotations are for bottum up BMP drawing
     case 4:
       writedata(ILI9341_MADCTL_MX | ILI9341_MADCTL_MY | ILI9341_MADCTL_BGR);
-      _width  = ILI9341_TFTWIDTH;
-      _height = ILI9341_TFTHEIGHT;
+      _width  = HX8347_TFTWIDTH;
+      _height = HX8347_TFTHEIGHT;
       break;
     case 5:
       writedata(ILI9341_MADCTL_MV | ILI9341_MADCTL_MX | ILI9341_MADCTL_BGR);
-      _width  = ILI9341_TFTHEIGHT;
-      _height = ILI9341_TFTWIDTH;
+      _width  = HX8347_TFTHEIGHT;
+      _height = HX8347_TFTWIDTH;
       break;
     case 6:
       writedata(ILI9341_MADCTL_BGR);
-      _width  = ILI9341_TFTWIDTH;
-      _height = ILI9341_TFTHEIGHT;
+      _width  = HX8347_TFTWIDTH;
+      _height = HX8347_TFTHEIGHT;
       break;
     case 7:
       writedata(ILI9341_MADCTL_MY | ILI9341_MADCTL_MV | ILI9341_MADCTL_BGR);
-      _width  = ILI9341_TFTHEIGHT;
-      _height = ILI9341_TFTWIDTH;
+      _width  = HX8347_TFTHEIGHT;
+      _height = HX8347_TFTWIDTH;
       break;
 
   }
@@ -2135,6 +2139,19 @@ int TFT_ILI9341::drawFloat(float floatNumber, int dp, int poX, int poY, int font
   
   // Finally we can plot the string and return pixel length
   return drawString(str, poX, poY, font);
+}
+
+
+/***************************************************************************************
+** Function name:           gramWrite
+** Descriptions:            sets up a write to the graphics ram
+***************************************************************************************/
+inline void gramWrite(void)
+{
+  TFT_DC_C;
+  SPDR = HX8347_GRAM_WRITE; spiWait15();
+
+  TFT_DC_D;
 }
 
 /***************************************************************************************
