@@ -1561,43 +1561,43 @@ void TFT_ILI9341::setRotation(uint8_t m)
   writecommand(HX8347_MEM_ACC_CTRL);
   switch (rotation) {
     case 0:
-      writedata(HX8347_MEM_ACC_CTRL_MX | HX8347_MEM_ACC_CTRL_BGR);
+      writedata(HX8347_MEM_ACC_CTRL_BGR);
       _width  = HX8347_TFTWIDTH;
       _height = HX8347_TFTHEIGHT;
       break;
     case 1:
-      writedata(HX8347_MEM_ACC_CTRL_MV | HX8347_MEM_ACC_CTRL_BGR);
+      writedata(HX8347_MEM_ACC_CTRL_MX | HX8347_MEM_ACC_CTRL_MV | HX8347_MEM_ACC_CTRL_BGR);
       _width  = HX8347_TFTHEIGHT;
       _height = HX8347_TFTWIDTH;
       break;
     case 2:
-      writedata(HX8347_MEM_ACC_CTRL_MY | HX8347_MEM_ACC_CTRL_BGR);
+      writedata(HX8347_MEM_ACC_CTRL_MX | HX8347_MEM_ACC_CTRL_MY | HX8347_MEM_ACC_CTRL_BGR);
       _width  = HX8347_TFTWIDTH;
       _height = HX8347_TFTHEIGHT;
       break;
     case 3:
-      writedata(HX8347_MEM_ACC_CTRL_MX | HX8347_MEM_ACC_CTRL_MY | HX8347_MEM_ACC_CTRL_MV | HX8347_MEM_ACC_CTRL_BGR);
+      writedata(HX8347_MEM_ACC_CTRL_MY | HX8347_MEM_ACC_CTRL_MV | HX8347_MEM_ACC_CTRL_BGR);
       _width  = HX8347_TFTHEIGHT;
       _height = HX8347_TFTWIDTH;
       break;
   // These next rotations are for bottum up BMP drawing
     case 4:
-      writedata(HX8347_MEM_ACC_CTRL_MX | HX8347_MEM_ACC_CTRL_MY | HX8347_MEM_ACC_CTRL_BGR);
+      writedata(HX8347_MEM_ACC_CTRL_MY | HX8347_MEM_ACC_CTRL_BGR);
       _width  = HX8347_TFTWIDTH;
       _height = HX8347_TFTHEIGHT;
       break;
     case 5:
-      writedata(HX8347_MEM_ACC_CTRL_MV | HX8347_MEM_ACC_CTRL_MX | HX8347_MEM_ACC_CTRL_BGR);
+      writedata(HX8347_MEM_ACC_CTRL_MV | HX8347_MEM_ACC_CTRL_BGR);
       _width  = HX8347_TFTHEIGHT;
       _height = HX8347_TFTWIDTH;
       break;
     case 6:
-      writedata(HX8347_MEM_ACC_CTRL_BGR);
+      writedata(HX8347_MEM_ACC_CTRL_MX | HX8347_MEM_ACC_CTRL_BGR);
       _width  = HX8347_TFTWIDTH;
       _height = HX8347_TFTHEIGHT;
       break;
     case 7:
-      writedata(HX8347_MEM_ACC_CTRL_MY | HX8347_MEM_ACC_CTRL_MV | HX8347_MEM_ACC_CTRL_BGR);
+      writedata(HX8347_MEM_ACC_CTRL_MX | HX8347_MEM_ACC_CTRL_MY | HX8347_MEM_ACC_CTRL_MV | HX8347_MEM_ACC_CTRL_BGR);
       _width  = HX8347_TFTHEIGHT;
       _height = HX8347_TFTWIDTH;
       break;
