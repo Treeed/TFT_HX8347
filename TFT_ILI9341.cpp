@@ -975,43 +975,66 @@ void TFT_ILI9341::setAddrWindow(int16_t x0, int16_t y0, int16_t x1, int16_t y1)
   // Column addr set
   TFT_DC_C;
   TFT_CS_L;
-  SPDR = ILI9341_CASET;
-  spiWait15();
+  SPDR = HX8347_START_COL_2; spiWait15();
 
   TFT_DC_D;
-  SPDR = x0 >> 8;; spiWait12();
+  SPDR = x0 >> 8; spiWait12();
   addr_col = 0xFFFF;
+
+  TFT_DC_C;
+  SPDR = HX8347_START_COL_1; spiWait15();
+
+  TFT_DC_D;
   SPDR = x0; spiWait12();
+
   if(x1!=win_xe) {
+    TFT_DC_C;
+    SPDR = HX8347_END_COL_2;
+    spiWait15();
+
+    TFT_DC_D;
     SPDR = x1 >> 8; spiWait12();
     asm volatile( "nop\n\t" ::);
     win_xe=x1;
+
+    TFT_DC_C;
+    SPDR = HX8347_END_COL_1; spiWait15();
+
+    TFT_DC_D;
     SPDR = x1; spiWait14();
   }
 
   // Row addr set
   TFT_DC_C;
-  SPDR = ILI9341_PASET; spiWait15();
+  SPDR = HX8347_START_ROW_2; spiWait15();
 
   TFT_DC_D;
   SPDR = y0 >> 8; spiWait12();
   addr_row = 0xFFFF;
+
+  TFT_DC_C;
+  SPDR = HX8347_START_ROW_1; spiWait15();
+
+  TFT_DC_D;
   SPDR = y0; spiWait12();
   if(y1!=win_ye) {
+
+    TFT_DC_C;
+    SPDR = HX8347_END_ROW_2; spiWait15();
+
+    TFT_DC_D;
     SPDR = y1 >> 8; spiWait12();
     asm volatile( "nop\n\t" ::);
     win_ye=y1;
+
+    TFT_DC_C;
+    SPDR = HX8347_END_ROW_1; spiWait15();
+
+    TFT_DC_D;
     SPDR = y1; spiWait14();
   }
 
-  // write to RAM
-  TFT_DC_C;
-  SPDR = ILI9341_RAMWR; spiWait14();
-
-  //CS, HIGH;
-  //TFT_CS_H;
-  TFT_DC_D;
-
+  gramWrite();
 }
 
 /***************************************************************************************
@@ -1027,37 +1050,60 @@ void TFT_ILI9341::drawPixel(uint16_t x, uint16_t y, uint16_t color)
   TFT_CS_L;
 
 if (addr_col != x) {
-  TFT_DC_C;
-  SPDR = ILI9341_CASET;
-  spiWait12();
-  addr_col = x;
-  TFT_DC_D;
-  SPDR = x >> 8; spiWait17();
-  SPDR = x; spiWait17();
+    TFT_DC_C;
+    SPDR = HX8347_START_COL_2; spiWait15();
 
-  SPDR = x >> 8; spiWait17();
-  SPDR = x; spiWait12();
+    TFT_DC_D;
+    SPDR = x >> 8; spiWait12();
+    addr_col = x;
+
+    TFT_DC_C;
+    SPDR = HX8347_START_COL_1; spiWait15();
+
+    TFT_DC_D;
+    SPDR = x; spiWait15();
+
+    TFT_DC_C;
+    SPDR = HX8347_END_COL_2; spiWait15();
+
+    TFT_DC_D;
+    SPDR = x >> 8; spiWait15();
+
+    TFT_DC_C;
+    SPDR = HX8347_END_COL_1; spiWait15();
+
+    TFT_DC_D;
+    SPDR = x; spiWait14();
 }
 
 if (addr_row != y) {
-  TFT_DC_C;
-  SPDR = ILI9341_PASET;
-  spiWait12();
-  addr_row = y;
-  TFT_DC_D;
-  SPDR = y >> 8; spiWait17();
-  SPDR = y; spiWait17();
+    TFT_DC_C;
+    SPDR = HX8347_START_ROW_2; spiWait15();
 
-  SPDR = y >> 8; spiWait17();
-  SPDR = y; spiWait14();
+    TFT_DC_D;
+    SPDR = y >> 8; spiWait12();
+    addr_row = y;
+
+    TFT_DC_C;
+    SPDR = HX8347_START_ROW_1; spiWait15();
+
+    TFT_DC_D;
+    SPDR = y; spiWait15();
+
+    TFT_DC_C;
+    SPDR = HX8347_END_ROW_2; spiWait15();
+
+    TFT_DC_D;
+    SPDR = y >> 8; spiWait15();
+
+    TFT_DC_C;
+    SPDR = HX8347_END_ROW_1; spiWait15();
+
+    TFT_DC_D;
+    SPDR = y; spiWait14();
 }
 
-  TFT_DC_C;
-
-  SPDR = ILI9341_RAMWR; spiWait15();
-
-  TFT_DC_D;
-
+  gramWrite();
   SPDR = color >> 8; spiWait15();
   win_xe=x;
   SPDR = color; spiWait12();
@@ -1077,34 +1123,37 @@ void TFT_ILI9341::fastPixel(uint16_t x, uint16_t y, uint16_t color)
   TFT_CS_L;
 
 if (addr_col != x) {
-  TFT_DC_C;
-  SPDR = ILI9341_CASET;
-  spiWait14();
-  addr_col = x;
-  TFT_DC_D;
+    TFT_DC_C;
+    SPDR = HX8347_START_COL_2; spiWait15();
 
-  SPDR = x >> 8;; spiWait17();
-  SPDR = x; spiWait12();
+    TFT_DC_D;
+    SPDR = x >> 8; spiWait12();
+    addr_col = x;
+
+    TFT_DC_C;
+    SPDR = HX8347_START_COL_1; spiWait15();
+
+    TFT_DC_D;
+    SPDR = x; spiWait15();
 }
 
 if (addr_row != y) {
-  TFT_DC_C;
-  SPDR = ILI9341_PASET;
-  spiWait14();
-  addr_row = y;
-  TFT_DC_D;
+    TFT_DC_C;
+    SPDR = HX8347_END_ROW_2; spiWait15();
 
-  SPDR = y >> 8; spiWait17();
-  SPDR = y; spiWait14();
+    TFT_DC_D;
+    SPDR = y >> 8; spiWait12();
+    addr_row = y;
+
+    TFT_DC_C;
+    SPDR = HX8347_END_ROW_1; spiWait15();
+
+    TFT_DC_D;
+    SPDR = y; spiWait15();
 }
 
-  TFT_DC_C;
-
-  SPDR = ILI9341_RAMWR; spiWait15();
-
-  TFT_DC_D;
-
-  SPDR = color >> 8; spiWait17();
+  gramWrite();
+  SPDR = color >> 8; spiWait15();
   SPDR = color; spiWait14();
 
   TFT_CS_H;
@@ -1118,27 +1167,56 @@ void TFT_ILI9341::fastSetup(void)
 
   TFT_DC_C;
   TFT_CS_L;
+  SPDR = HX8347_START_COL_2; spiWait15();
 
-  SPDR = ILI9341_CASET;
-  spiWait15();
   TFT_DC_D;
   SPDR = 0; spiWait14();
   addr_col = 0;
-  SPDR = 0; spiWait12();
-  win_xe=_width-1;
-  SPDR = win_xe >> 8; spiWait15();
-  SPDR = win_xe; spiWait14();
 
   TFT_DC_C;
+  SPDR = HX8347_START_COL_1; spiWait15();
 
-  SPDR = ILI9341_PASET;
-  spiWait15();
+  TFT_DC_D;
+  SPDR = 0; spiWait12();
+  win_xe=_width-1;
+
+  TFT_DC_C;
+  SPDR = HX8347_END_COL_2; spiWait15();
+
+  TFT_DC_D;
+  SPDR = win_xe >> 8; spiWait14();
+
+  TFT_DC_C;
+  SPDR = HX8347_END_COL_1; spiWait15();
+
+  TFT_DC_D;
+  SPDR = win_xe; spiWait14();
+
+  // Row addr set
+  TFT_DC_C;
+  SPDR = HX8347_START_ROW_2; spiWait15();
+
   TFT_DC_D;
   SPDR = 0; spiWait14();
   addr_row = 0;
+
+  TFT_DC_C;
+  SPDR = HX8347_START_ROW_1; spiWait15();
+
+  TFT_DC_D;
   SPDR = 0; spiWait12();
   win_ye=_height-1;
-  SPDR = win_ye >> 8; spiWait15();
+
+  TFT_DC_C;
+  SPDR = HX8347_END_ROW_2; spiWait15();
+
+  TFT_DC_D;
+  SPDR = win_ye >> 8; spiWait14();
+
+  TFT_DC_C;
+  SPDR = HX8347_END_ROW_1; spiWait15();
+
+  TFT_DC_D;
   SPDR = win_ye; spiWait14();
 
   TFT_CS_H;
