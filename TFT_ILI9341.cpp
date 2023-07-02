@@ -1620,7 +1620,7 @@ void TFT_ILI9341::invertDisplay(boolean i)
 {
   spi_begin();
   writecommand(HX8347_DISP_MODE);
-  writedata(i ? HX8347_DISP_MODE_INV : 0)
+  writedata(i ? HX8347_DISP_MODE_INV : 0);
   spi_end();
 }
 
