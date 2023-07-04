@@ -37,16 +37,16 @@
 //   TFT_DC  48  // Data Command control pin
 //   TFT_RST 44  // Reset pin (could connect to Arduino RESET pin)
 
-// These are the control pins I use on my UNO/Nano/Pro Micro/ATmega328 setup
+// These are the control pins on the Waveshare 2.8" Uno shield:
 //   TFT_CS  10  // Chip select control pin
-//   TFT_DC   9  // Data Command control pin
-//   TFT_RST  7  // Reset pin (could connect to Arduino RESET pin)
+//   TFT_DC   7  // Data Command control pin
+//   TFT_RST  8  // Reset pin (could connect to Arduino RESET pin)
 
 // ###### EDIT THE PIN NUMBERS IN THE 3 LINES FOLLOWING TO SUIT YOUR SETUP ######
 
 #define TFT_CS   10  // Chip select control pin
-#define TFT_DC   8  // Data Command control pin
-#define TFT_RST  7  // Reset pin (could connect to Arduino RESET pin)
+#define TFT_DC   7  // Data Command control pin
+#define TFT_RST  8  // Reset pin (could connect to Arduino RESET pin)
 
 
 // ##################################################################################
