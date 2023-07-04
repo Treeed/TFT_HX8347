@@ -8,11 +8,11 @@
  the sketch fit in an UNO!
 
  Make sure all the required fonts are loaded by editting the
- User_Setup.h file in the TFT_ILI9341 library folder.
+ User_Setup.h file in the TFT_HX8347 library folder.
 
  If using an UNO or Mega (ATmega328 or ATmega2560 processor) then for best
  performance use the F_AS_T option found in the User_Setup.h file in the
- TFT_ILI9341 library folder.
+ TFT_HX8347 library folder.
 
  The library uses the hardware SPI pins only:
    For UNO, Nano, Micro Pro ATmega328 based processors
@@ -45,11 +45,11 @@
 
 #include "SPI.h"
 
-#include "TFT_ILI9341.h"
+#include "TFT_HX8347.h"
 
 #define TFT_GREY 0x7BEF
 
-TFT_ILI9341 myGLCD = TFT_ILI9341();       // Invoke custom library
+TFT_HX8347 myGLCD = TFT_HX8347();       // Invoke custom library
 
 unsigned long runTime = 0;
 void setup()
@@ -82,7 +82,7 @@ void loop()
   myGLCD.fillRect(0, 226, 319, 14,TFT_GREY);
 
   myGLCD.setTextColor(TFT_BLACK,TFT_RED);
-  myGLCD.drawCentreString("* TFT_ILI9341 *", 160, 4, 1);
+  myGLCD.drawCentreString("* TFT_HX8347 *", 160, 4, 1);
   myGLCD.setTextColor(TFT_YELLOW,TFT_GREY);
   myGLCD.drawCentreString("Adapted by Bodmer", 160, 228,1);
 

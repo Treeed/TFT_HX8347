@@ -10,10 +10,10 @@
 #define WHITE 0xFFFF
 #define GREY  0x5AEB
 
-#include <TFT_ILI9341.h> // Hardware-specific library
+#include <TFT_HX8347.h> // Hardware-specific library
 #include <SPI.h>
 
-TFT_ILI9341 tft = TFT_ILI9341();       // Invoke custom library
+TFT_HX8347 tft = TFT_HX8347();       // Invoke custom library
 
 int16_t h = 240;
 int16_t w = 320;
@@ -100,7 +100,7 @@ void initgame() {
 
   tft.setTextDatum(TC_DATUM);
   tft.setTextColor(WHITE,GREY);
-  //tft.drawString("TFT_ILI9341 example", w/2, h-26 , 4);
+  //tft.drawString("TFT_HX8347 example", w/2, h-26 , 4);
 }
 
 void midline() {

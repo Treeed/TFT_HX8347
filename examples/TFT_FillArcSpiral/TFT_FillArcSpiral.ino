@@ -2,10 +2,10 @@
 
 // Sketch also includes (but does not use) a function to change the brightness of a colour
 
-#include <TFT_ILI9341.h> // Hardware-specific library
+#include <TFT_HX8347.h> // Hardware-specific library
 #include <SPI.h>
 
-TFT_ILI9341 tft = TFT_ILI9341();       // Invoke custom library
+TFT_HX8347 tft = TFT_HX8347();       // Invoke custom library
 
 #define DEG2RAD 0.0174532925
 

@@ -1,5 +1,5 @@
 /*
- Example animated analogue meters using a ILI9341 TFT LCD screen
+ Example animated analogue meters using a HX8347 TFT LCD screen
 
  Needs Font 2 (also Font 4 if using large scale label)
 
@@ -8,10 +8,10 @@
 
  */
 
-#include <TFT_ILI9341.h> // Hardware-specific library
+#include <TFT_HX8347.h> // Hardware-specific library
 #include <SPI.h>
 
-TFT_ILI9341 tft = TFT_ILI9341();       // Invoke custom library
+TFT_HX8347 tft = TFT_HX8347();       // Invoke custom library
 
 #define TFT_GREY 0x5AEB
 

@@ -5,11 +5,11 @@
  the sketch fit in an UNO!
 
  Make sure all the required fonts are loaded by editting the
- User_Setup.h file in the TFT_ILI9341 library folder.
+ User_Setup.h file in the TFT_HX8347 library folder.
 
  If using an UNO or Mega (ATmega328 or ATmega2560 processor) then for best
  performance use the F_AS_T option found in the User_Setup.h file in the
- TFT_ILI9341 library folder.
+ TFT_HX8347 library folder.
 
  The library uses the hardware SPI pins only:
    For UNO, Nano, Micro Pro ATmega328 based processors
@@ -42,7 +42,7 @@
 
 
 #include "SPI.h"
-#include "TFT_ILI9341.h"
+#include "TFT_HX8347.h"
 
 // These are used to get information about static SRAM and flash memory sizes
 extern "C" char __data_start[];		// start of SRAM data
@@ -50,7 +50,7 @@ extern "C" char _end[];			// end of SRAM data (used to check amount of SRAM this
 extern "C" char __data_load_end[];	// end of FLASH (used to check amount of Flash this program's code and data uses)
 
 // Use hardware SPI
-TFT_ILI9341 tft = TFT_ILI9341();
+TFT_HX8347 tft = TFT_HX8347();
 
 unsigned long total = 0;
 unsigned long tn = 0;
@@ -157,7 +157,7 @@ void loop(void)
 	tft.setTextColor(TFT_MAGENTA);
 	tft.setTextSize(2);
 
- 	tft.println(F("     TFT_ILI9341    "));
+ 	tft.println(F("     TFT_HX8347    "));
 
 	tft.setTextSize(1);
 	tft.setTextColor(TFT_WHITE);

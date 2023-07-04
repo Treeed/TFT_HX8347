@@ -6,11 +6,11 @@
  Needs fonts 2, 4, 6, 7 and 8
 
  Make sure all the required fonts are loaded by editting the
- User_Setup.h file in the TFT_ILI9341 library folder.
+ User_Setup.h file in the TFT_HX8347 library folder.
 
  If using an UNO or Mega (ATmega328 or ATmega2560 processor) then for best
  performance use the F_AS_T option found in the User_Setup.h file in the
- TFT_ILI9341 library folder.
+ TFT_HX8347 library folder.
 
  The library uses the hardware SPI pins only:
    For UNO, Nano, Micro Pro ATmega328 based processors
@@ -42,10 +42,10 @@
  */
 
 
-#include <TFT_ILI9341.h> // Hardware-specific library
+#include <TFT_HX8347.h> // Hardware-specific library
 #include <SPI.h>
 
-TFT_ILI9341 tft = TFT_ILI9341();       // Invoke custom library
+TFT_HX8347 tft = TFT_HX8347();       // Invoke custom library
 
 unsigned long drawTime = 0;
 

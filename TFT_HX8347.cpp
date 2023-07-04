@@ -15,7 +15,7 @@
 
  ****************************************************/
 
-#include "TFT_ILI9341.h"
+#include "TFT_HX8347.h"
 
 #include <avr/pgmspace.h>
 #include <limits.h>
@@ -34,10 +34,10 @@ inline void spiWrite16s(uint16_t data) __attribute__((always_inline));
 inline void spiWrite16R(uint16_t data, int16_t count) __attribute__((always_inline));
 
 /***************************************************************************************
-** Function name:           TFT_ILI9341
+** Function name:           TFT_HX8347
 ** Description:             Constructor , we must use hardware SPI pins
 ***************************************************************************************/
-TFT_ILI9341::TFT_ILI9341(int16_t w, int16_t h)
+TFT_HX8347::TFT_HX8347(int16_t w, int16_t h)
 {
 
   if (TFT_RST > 0) {
@@ -99,7 +99,7 @@ TFT_ILI9341::TFT_ILI9341(int16_t w, int16_t h)
 ** Function name:           spiwrite
 ** Description:             Write 8 bits to SPI port
 ***************************************************************************************/
-void TFT_ILI9341::spiwrite(uint8_t c)
+void TFT_HX8347::spiwrite(uint8_t c)
 {
   uint8_t backupSPCR = SPCR;
   SPCR = mySPCR;
@@ -113,7 +113,7 @@ void TFT_ILI9341::spiwrite(uint8_t c)
 ** Function name:           writecommand
 ** Description:             Send an 8 bit command to the TFT
 ***************************************************************************************/
-void TFT_ILI9341::writecommand(uint8_t c)
+void TFT_HX8347::writecommand(uint8_t c)
 {
   savedSPCR = SPSR;// We need this here for some reason...
   TFT_DC_C;
@@ -126,7 +126,7 @@ void TFT_ILI9341::writecommand(uint8_t c)
 ** Function name:           writedata
 ** Description:             Send a 8 bit data value to the TFT
 ***************************************************************************************/
-void TFT_ILI9341::writedata(uint8_t c)
+void TFT_HX8347::writedata(uint8_t c)
 {
   TFT_DC_D;
   TFT_CS_L;
@@ -138,7 +138,7 @@ void TFT_ILI9341::writedata(uint8_t c)
 ** Function name:           backupSPCR
 ** Description:             Save the SPCR register so it can be restored
 ***************************************************************************************/
-void TFT_ILI9341::backupSPCR() {
+void TFT_HX8347::backupSPCR() {
   savedSPCR = SPCR;
   SPCR = mySPCR;
 }
@@ -147,7 +147,7 @@ void TFT_ILI9341::backupSPCR() {
 ** Function name:           restoreSPCR
 ** Description:             Restore the origional SPCR value
 ***************************************************************************************/
-void TFT_ILI9341::restoreSPCR() {
+void TFT_HX8347::restoreSPCR() {
  SPCR = savedSPCR;
 }
 
@@ -190,7 +190,7 @@ static inline void spi_end(void) {
 ** Function name:           begin
 ** Description:             Included for backwards compatibility
 ***************************************************************************************/
-void TFT_ILI9341::begin(void)
+void TFT_HX8347::begin(void)
 {
  init();
 }
@@ -201,7 +201,7 @@ void TFT_ILI9341::begin(void)
 ***************************************************************************************/
 #define DELAY 0x80
 
-void TFT_ILI9341::init(void)
+void TFT_HX8347::init(void)
 {
   SPI.begin();
 
@@ -223,8 +223,8 @@ void TFT_ILI9341::init(void)
   }
 
 
-	// Initialization commands for ILI9341 screens
-	static const uint8_t ILI9341_cmds[] PROGMEM =
+	// Initialization commands for HX8347 screens
+	static const uint8_t HX8347_cmds[] PROGMEM =
 	{
     //init commands taken from waveshare lib
 		52,
@@ -294,14 +294,14 @@ void TFT_ILI9341::init(void)
     HX8347_MEM_ACC_CTRL, 1, HX8347_MEM_ACC_CTRL_BGR, // MY=0, MX=0, MV=0, BGR=1
 	};
 
-	commandList(ILI9341_cmds);
+	commandList(HX8347_cmds);
 }
 
 /***************************************************************************************
 ** Function name:           commandList
 ** Description:             Get initialisation commands from FLASH and send to TFT
 ***************************************************************************************/
-void TFT_ILI9341::commandList (const uint8_t *addr)
+void TFT_HX8347::commandList (const uint8_t *addr)
 {
 	uint8_t  numCommands, numArgs;
 	uint8_t  ms;
@@ -332,7 +332,7 @@ void TFT_ILI9341::commandList (const uint8_t *addr)
 ** Function name:           drawCircle
 ** Description:             Draw a circle outline
 ***************************************************************************************/
-void TFT_ILI9341::drawCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color)
+void TFT_HX8347::drawCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color)
 {
   int16_t f = 1 - r;
   int16_t ddF_x = 1;
@@ -372,7 +372,7 @@ void TFT_ILI9341::drawCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color)
 ** Function name:           drawCircleHelper
 ** Description:             Support function for circle drawing
 ***************************************************************************************/
-void TFT_ILI9341::drawCircleHelper( int16_t x0, int16_t y0, int16_t r, uint8_t cornername, uint16_t color)
+void TFT_HX8347::drawCircleHelper( int16_t x0, int16_t y0, int16_t r, uint8_t cornername, uint16_t color)
 {
   int16_t f     = 1 - r;
   int16_t ddF_x = 1;
@@ -411,7 +411,7 @@ void TFT_ILI9341::drawCircleHelper( int16_t x0, int16_t y0, int16_t r, uint8_t c
 ** Function name:           fillCircle
 ** Description:             draw a filled circle
 ***************************************************************************************/
-void TFT_ILI9341::fillCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color)
+void TFT_HX8347::fillCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color)
 {
   drawFastVLine(x0, y0 - r, r + r + 1, color);
   fillCircleHelper(x0, y0, r, 3, 0, color);
@@ -422,7 +422,7 @@ void TFT_ILI9341::fillCircle(int16_t x0, int16_t y0, int16_t r, uint16_t color)
 ** Description:             Support function for filled circle drawing
 ***************************************************************************************/
 // Used to do circles and roundrects
-void TFT_ILI9341::fillCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername, int16_t delta, uint16_t color)
+void TFT_HX8347::fillCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t cornername, int16_t delta, uint16_t color)
 {
   int16_t f     = 1 - r;
   int16_t ddF_x = 1;
@@ -455,7 +455,7 @@ void TFT_ILI9341::fillCircleHelper(int16_t x0, int16_t y0, int16_t r, uint8_t co
 ** Function name:           drawEllipse
 ** Description:             Draw a ellipse outline
 ***************************************************************************************/
-void TFT_ILI9341::drawEllipse(int16_t x0, int16_t y0, int16_t rx, int16_t ry, uint16_t color)
+void TFT_HX8347::drawEllipse(int16_t x0, int16_t y0, int16_t rx, int16_t ry, uint16_t color)
 {
   if (rx<2) return;
   if (ry<2) return;
@@ -501,7 +501,7 @@ void TFT_ILI9341::drawEllipse(int16_t x0, int16_t y0, int16_t rx, int16_t ry, ui
 ** Function name:           fillEllipse
 ** Description:             draw a filled ellipse
 ***************************************************************************************/
-void TFT_ILI9341::fillEllipse(int16_t x0, int16_t y0, int16_t rx, int16_t ry, uint16_t color)
+void TFT_HX8347::fillEllipse(int16_t x0, int16_t y0, int16_t rx, int16_t ry, uint16_t color)
 {
   if (rx<2) return;
   if (ry<2) return;
@@ -544,7 +544,7 @@ void TFT_ILI9341::fillEllipse(int16_t x0, int16_t y0, int16_t rx, int16_t ry, ui
 ** Function name:           fillScreen
 ** Description:             Clear the screen to defined colour
 ***************************************************************************************/
-void TFT_ILI9341::fillScreen(uint16_t color)
+void TFT_HX8347::fillScreen(uint16_t color)
 {
   fillRect(0, 0, _width, _height, color);
 }
@@ -554,7 +554,7 @@ void TFT_ILI9341::fillScreen(uint16_t color)
 ** Description:             Draw a rectangle outline
 ***************************************************************************************/
 // Draw a rectangle
-void TFT_ILI9341::drawRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color)
+void TFT_HX8347::drawRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color)
 {
   drawFastHLine(x, y, w, color);
   drawFastHLine(x, y + h - 1, w, color);
@@ -567,7 +567,7 @@ void TFT_ILI9341::drawRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t 
 ** Description:             Draw a rounded corner rectangle outline
 ***************************************************************************************/
 // Draw a rounded rectangle
-void TFT_ILI9341::drawRoundRect(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint16_t color)
+void TFT_HX8347::drawRoundRect(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint16_t color)
 {
   // smarter version
   drawFastHLine(x + r  , y    , w - r - r, color); // Top
@@ -586,7 +586,7 @@ void TFT_ILI9341::drawRoundRect(int16_t x, int16_t y, int16_t w, int16_t h, int1
 ** Description:             Draw a rounded corner filled rectangle
 ***************************************************************************************/
 // Fill a rounded rectangle
-void TFT_ILI9341::fillRoundRect(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint16_t color)
+void TFT_HX8347::fillRoundRect(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint16_t color)
 {
   // smarter version
   fillRect(x + r, y, w - r - r, h, color);
@@ -601,7 +601,7 @@ void TFT_ILI9341::fillRoundRect(int16_t x, int16_t y, int16_t w, int16_t h, int1
 ** Description:             Draw a triangle outline using 3 arbitrary points
 ***************************************************************************************/
 // Draw a triangle
-void TFT_ILI9341::drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color)
+void TFT_HX8347::drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color)
 {
   drawLine(x0, y0, x1, y1, color);
   drawLine(x1, y1, x2, y2, color);
@@ -613,7 +613,7 @@ void TFT_ILI9341::drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, i
 ** Description:             Draw a filled triangle using 3 arbitrary points
 ***************************************************************************************/
 // Fill a triangle - original Adafruit function works well and code footprint is small
-void TFT_ILI9341::fillTriangle ( int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color)
+void TFT_HX8347::fillTriangle ( int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color)
 {
   int16_t a, b, y, last;
 
@@ -686,7 +686,7 @@ void TFT_ILI9341::fillTriangle ( int16_t x0, int16_t y0, int16_t x1, int16_t y1,
 ** Function name:           drawBitmap
 ** Description:             Draw an image stored in an array on the TFT
 ***************************************************************************************/
-void TFT_ILI9341::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint16_t color) {
+void TFT_HX8347::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint16_t color) {
 
   int16_t i, j, byteWidth = (w + 7) / 8;
   fastSetup();
@@ -703,7 +703,7 @@ void TFT_ILI9341::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_
 ** Function name:           setCursor
 ** Description:             Set the text cursor x,y position
 ***************************************************************************************/
-void TFT_ILI9341::setCursor(int16_t x, int16_t y)
+void TFT_HX8347::setCursor(int16_t x, int16_t y)
 {
   cursor_x = x;
   cursor_y = y;
@@ -713,7 +713,7 @@ void TFT_ILI9341::setCursor(int16_t x, int16_t y)
 ** Function name:           setCursor
 ** Description:             Set the text cursor x,y position and font
 ***************************************************************************************/
-void TFT_ILI9341::setCursor(int16_t x, int16_t y, uint8_t font)
+void TFT_HX8347::setCursor(int16_t x, int16_t y, uint8_t font)
 {
   textfont = font;
   cursor_x = x;
@@ -724,7 +724,7 @@ void TFT_ILI9341::setCursor(int16_t x, int16_t y, uint8_t font)
 ** Function name:           setTextSize
 ** Description:             Set the text size multiplier
 ***************************************************************************************/
-void TFT_ILI9341::setTextSize(uint8_t s)
+void TFT_HX8347::setTextSize(uint8_t s)
 {
   if (s>7) s = 7; // Limit the maximum size multiplier so byte variables can be used for rendering
   textsize = (s > 0) ? s : 1; // Don't allow font size 0
@@ -734,7 +734,7 @@ void TFT_ILI9341::setTextSize(uint8_t s)
 ** Function name:           setTextFont
 ** Description:             Set the font for the print stream
 ***************************************************************************************/
-void TFT_ILI9341::setTextFont(uint8_t f)
+void TFT_HX8347::setTextFont(uint8_t f)
 {
   textfont = (f > 0) ? f : 1; // Don't allow font 0
 }
@@ -743,7 +743,7 @@ void TFT_ILI9341::setTextFont(uint8_t f)
 ** Function name:           setTextColor
 ** Description:             Set the font foreground colour (background is transparent)
 ***************************************************************************************/
-void TFT_ILI9341::setTextColor(uint16_t c)
+void TFT_HX8347::setTextColor(uint16_t c)
 {
   // For 'transparent' background, we'll set the bg
   // to the same as fg instead of using a flag
@@ -754,7 +754,7 @@ void TFT_ILI9341::setTextColor(uint16_t c)
 ** Function name:           setTextColor
 ** Description:             Set the font foreground and background colour
 ***************************************************************************************/
-void TFT_ILI9341::setTextColor(uint16_t c, uint16_t b)
+void TFT_HX8347::setTextColor(uint16_t c, uint16_t b)
 {
   textcolor   = c;
   textbgcolor = b;
@@ -764,7 +764,7 @@ void TFT_ILI9341::setTextColor(uint16_t c, uint16_t b)
 ** Function name:           setTextWrap
 ** Description:             Define if text should wrap at end of line
 ***************************************************************************************/
-void TFT_ILI9341::setTextWrap(boolean w)
+void TFT_HX8347::setTextWrap(boolean w)
 {
   textwrap = w;
 }
@@ -773,7 +773,7 @@ void TFT_ILI9341::setTextWrap(boolean w)
 ** Function name:           setTextDatum
 ** Description:             Set the text position reference datum
 ***************************************************************************************/
-void TFT_ILI9341::setTextDatum(uint8_t d)
+void TFT_HX8347::setTextDatum(uint8_t d)
 {
   textdatum = d;
 }
@@ -782,7 +782,7 @@ void TFT_ILI9341::setTextDatum(uint8_t d)
 ** Function name:           setTextPadding
 ** Description:             Define padding width (aids erasing old text and numbers)
 ***************************************************************************************/
-void TFT_ILI9341::setTextPadding(uint16_t x_width)
+void TFT_HX8347::setTextPadding(uint16_t x_width)
 {
   padX = x_width;
 }
@@ -791,7 +791,7 @@ void TFT_ILI9341::setTextPadding(uint16_t x_width)
 ** Function name:           getRotation
 ** Description:             Return the rotation value (as used by setRotation())
 ***************************************************************************************/
-uint8_t TFT_ILI9341::getRotation(void)
+uint8_t TFT_HX8347::getRotation(void)
 {
   return rotation;
 }
@@ -801,7 +801,7 @@ uint8_t TFT_ILI9341::getRotation(void)
 ** Description:             Return the pixel width of display (per current rotation)
 ***************************************************************************************/
 // Return the size of the display (per current rotation)
-int16_t TFT_ILI9341::width(void)
+int16_t TFT_HX8347::width(void)
 {
   return _width;
 }
@@ -810,7 +810,7 @@ int16_t TFT_ILI9341::width(void)
 ** Function name:           height
 ** Description:             Return the pixel height of display (per current rotation)
 ***************************************************************************************/
-int16_t TFT_ILI9341::height(void)
+int16_t TFT_HX8347::height(void)
 {
   return _height;
 }
@@ -819,7 +819,7 @@ int16_t TFT_ILI9341::height(void)
 ** Function name:           textWidth
 ** Description:             Return the width in pixels of a string in a given font
 ***************************************************************************************/
-int16_t TFT_ILI9341::textWidth(const char *string, int font)
+int16_t TFT_HX8347::textWidth(const char *string, int font)
 {
   unsigned int str_width  = 0;
   char uniCode;
@@ -847,7 +847,7 @@ int16_t TFT_ILI9341::textWidth(const char *string, int font)
 ***************************************************************************************/
 // Returns a value showing which fonts are loaded (bit N set =  Font N loaded)
 
-uint16_t TFT_ILI9341::fontsLoaded(void)
+uint16_t TFT_HX8347::fontsLoaded(void)
 {
   return fontsloaded;
 }
@@ -857,7 +857,7 @@ uint16_t TFT_ILI9341::fontsLoaded(void)
 ** Function name:           fontHeight
 ** Description:             return the height of a font
 ***************************************************************************************/
-int16_t TFT_ILI9341::fontHeight(int font)
+int16_t TFT_HX8347::fontHeight(int font)
 {
   return pgm_read_byte( &fontdata[font].height ) * textsize;
 }
@@ -866,7 +866,7 @@ int16_t TFT_ILI9341::fontHeight(int font)
 ** Function name:           drawChar
 ** Description:             draw a single character in the Adafruit GLCD font
 ***************************************************************************************/
-void TFT_ILI9341::drawChar(int16_t x, int16_t y, unsigned char c, uint16_t color, uint16_t bg, uint8_t size)
+void TFT_HX8347::drawChar(int16_t x, int16_t y, unsigned char c, uint16_t color, uint16_t bg, uint8_t size)
 {
 #ifdef LOAD_GLCD
   if ((x >= (int16_t)_width)            || // Clip right
@@ -954,7 +954,7 @@ spi_end();
 ***************************************************************************************/
 // Chip select is high at the end of this function
 
-void TFT_ILI9341::setWindow(int16_t x0, int16_t y0, int16_t x1, int16_t y1)
+void TFT_HX8347::setWindow(int16_t x0, int16_t y0, int16_t x1, int16_t y1)
 {
   spi_begin();
   setAddrWindow(x0, y0, x1, y1);
@@ -969,7 +969,7 @@ void TFT_ILI9341::setWindow(int16_t x0, int16_t y0, int16_t x1, int16_t y1)
 ***************************************************************************************/
 // Chip select stays low, use setWindow() from sketches
 
-void TFT_ILI9341::setAddrWindow(int16_t x0, int16_t y0, int16_t x1, int16_t y1)
+void TFT_HX8347::setAddrWindow(int16_t x0, int16_t y0, int16_t x1, int16_t y1)
 {
 
   // Column addr set
@@ -1041,7 +1041,7 @@ void TFT_ILI9341::setAddrWindow(int16_t x0, int16_t y0, int16_t x1, int16_t y1)
 ** Function name:           drawPixel
 ** Description:             push a single pixel at an arbitrary position
 ***************************************************************************************/
-void TFT_ILI9341::drawPixel(uint16_t x, uint16_t y, uint16_t color)
+void TFT_HX8347::drawPixel(uint16_t x, uint16_t y, uint16_t color)
 {
   // Faster range checking, possible because x and y are unsigned
   if ((x >= _width) || (y >= _height)) return;
@@ -1114,7 +1114,7 @@ if (addr_row != y) {
   spi_end();
 }
 
-void TFT_ILI9341::fastPixel(uint16_t x, uint16_t y, uint16_t color)
+void TFT_HX8347::fastPixel(uint16_t x, uint16_t y, uint16_t color)
 {
   // Faster range checking, possible because x and y are unsigned
   if ((x >= _width) || (y >= _height)) return;
@@ -1161,7 +1161,7 @@ if (addr_row != y) {
   spi_end();
 }
 
-void TFT_ILI9341::fastSetup(void)
+void TFT_HX8347::fastSetup(void)
 {
   spi_begin();
 
@@ -1229,7 +1229,7 @@ void TFT_ILI9341::fastSetup(void)
 ** Function name:           pushColor
 ** Description:             push a single pixel
 ***************************************************************************************/
-void TFT_ILI9341::pushColor(uint16_t color)
+void TFT_HX8347::pushColor(uint16_t color)
 {
   spi_begin();
 
@@ -1254,7 +1254,7 @@ void TFT_ILI9341::pushColor(uint16_t color)
 ** Function name:           pushColor
 ** Description:             push a single colour to "len" pixels
 ***************************************************************************************/
-void TFT_ILI9341::pushColor(uint16_t color, uint16_t len)
+void TFT_HX8347::pushColor(uint16_t color, uint16_t len)
 {
   spi_begin();
 
@@ -1275,7 +1275,7 @@ void TFT_ILI9341::pushColor(uint16_t color, uint16_t len)
 // previously been called to define the bounds.  Max 255 pixels at
 // a time (BMP examples read in small chunks due to limited RAM).
 
-void TFT_ILI9341::pushColors(uint16_t *data, uint8_t len)
+void TFT_HX8347::pushColors(uint16_t *data, uint8_t len)
 {
   uint16_t color;
   spi_begin();
@@ -1309,7 +1309,7 @@ void TFT_ILI9341::pushColors(uint16_t *data, uint8_t len)
 ***************************************************************************************/
 // Assumed that setWindow() has previously been called
 
-void TFT_ILI9341::pushColors(uint8_t *data, uint16_t len)
+void TFT_HX8347::pushColors(uint8_t *data, uint16_t len)
 {
   spi_begin();
   len = len<<1;
@@ -1345,7 +1345,7 @@ void TFT_ILI9341::pushColors(uint8_t *data, uint16_t len)
 // Select which version, fastest or compact
 #ifdef FAST_LINE
 
-void TFT_ILI9341::drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color)
+void TFT_HX8347::drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color)
 {
   spi_begin();
 
@@ -1425,7 +1425,7 @@ void TFT_ILI9341::drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint1
 #else // FAST_LINE not defined so use more compact version
 
 // Slower but more compact line drawing function
-void TFT_ILI9341::drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color)
+void TFT_HX8347::drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint16_t color)
 {
   boolean steep = abs(y1 - y0) > abs(x1 - x0);
   if (steep) {
@@ -1480,7 +1480,7 @@ void TFT_ILI9341::drawLine(int16_t x0, int16_t y0, int16_t x1, int16_t y1, uint1
 ** Function name:           drawFastVLine
 ** Description:             draw a vertical line
 ***************************************************************************************/
-void TFT_ILI9341::drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color)
+void TFT_HX8347::drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color)
 {
 #ifdef CLIP_CHECK
   // Rudimentary clipping
@@ -1502,7 +1502,7 @@ void TFT_ILI9341::drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color)
 ** Function name:           drawFastHLine
 ** Description:             draw a horizontal line
 ***************************************************************************************/
-void TFT_ILI9341::drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color)
+void TFT_HX8347::drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color)
 {
 #ifdef CLIP_CHECK
   // Rudimentary clipping
@@ -1523,7 +1523,7 @@ void TFT_ILI9341::drawFastHLine(int16_t x, int16_t y, int16_t w, uint16_t color)
 ** Function name:           fillRect
 ** Description:             draw a filled rectangle
 ***************************************************************************************/
-void TFT_ILI9341::fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color)
+void TFT_HX8347::fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color)
 {
 #ifdef CLIP_CHECK
   // rudimentary clipping (drawChar w/big text requires this)
@@ -1545,7 +1545,7 @@ void TFT_ILI9341::fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t 
 ** Function name:           color565
 ** Description:             convert three 8 bit RGB levels to a 16 bit colour value
 ***************************************************************************************/
-uint16_t TFT_ILI9341::color565(uint8_t r, uint8_t g, uint8_t b)
+uint16_t TFT_HX8347::color565(uint8_t r, uint8_t g, uint8_t b)
 {
   return ((r & 0xF8) << 8) | ((g & 0xFC) << 3) | (b >> 3);
 }
@@ -1554,7 +1554,7 @@ uint16_t TFT_ILI9341::color565(uint8_t r, uint8_t g, uint8_t b)
 ** Function name:           setRotation
 ** Description:             rotate the screen orientation m = 0-3 or 4-7 for BMP drawing
 ***************************************************************************************/
-void TFT_ILI9341::setRotation(uint8_t m)
+void TFT_HX8347::setRotation(uint8_t m)
 {
   rotation = m % 8;
   spi_begin();
@@ -1616,7 +1616,7 @@ void TFT_ILI9341::setRotation(uint8_t m)
 ** Function name:           invertDisplay
 ** Description:             invert the display colours i = 1 invert, i = 0 normal
 ***************************************************************************************/
-void TFT_ILI9341::invertDisplay(boolean i)
+void TFT_HX8347::invertDisplay(boolean i)
 {
   spi_begin();
   writecommand(HX8347_DISP_MODE);
@@ -1628,7 +1628,7 @@ void TFT_ILI9341::invertDisplay(boolean i)
 ** Function name:           write
 ** Description:             draw characters piped through serial stream
 ***************************************************************************************/
-size_t TFT_ILI9341::write(uint8_t uniCode)
+size_t TFT_HX8347::write(uint8_t uniCode)
 {
   if (uniCode == '\r') return 1;
   unsigned int width = 0;
@@ -1693,7 +1693,7 @@ size_t TFT_ILI9341::write(uint8_t uniCode)
 ** Function name:           drawChar
 ** Description:             draw a unicode onto the screen
 ***************************************************************************************/
-int TFT_ILI9341::drawChar(unsigned int uniCode, int x, int y, int font)
+int TFT_HX8347::drawChar(unsigned int uniCode, int x, int y, int font)
 {
 
   if (font==1)
@@ -1932,7 +1932,7 @@ int TFT_ILI9341::drawChar(unsigned int uniCode, int x, int y, int font)
 ** Function name:           drawString
 ** Description :            draw string with padding if it is defined
 ***************************************************************************************/
-int TFT_ILI9341::drawString(const char *string, int poX, int poY, int font)
+int TFT_HX8347::drawString(const char *string, int poX, int poY, int font)
 {
   int16_t sumX = 0;
   uint8_t padding = 1;
@@ -2048,7 +2048,7 @@ return sumX;
 ** Function name:           drawCentreString
 ** Descriptions:            draw string centred on dX
 ***************************************************************************************/
-int TFT_ILI9341::drawCentreString(const char *string, int dX, int poY, int font)
+int TFT_HX8347::drawCentreString(const char *string, int dX, int poY, int font)
 {
   byte tempdatum = textdatum;
   int sumX = 0;
@@ -2062,7 +2062,7 @@ int TFT_ILI9341::drawCentreString(const char *string, int dX, int poY, int font)
 ** Function name:           drawRightString
 ** Descriptions:            draw string right justified to dX
 ***************************************************************************************/
-int TFT_ILI9341::drawRightString(const char *string, int dX, int poY, int font)
+int TFT_HX8347::drawRightString(const char *string, int dX, int poY, int font)
 {
   byte tempdatum = textdatum;
   int sumX = 0;
@@ -2076,7 +2076,7 @@ int TFT_ILI9341::drawRightString(const char *string, int dX, int poY, int font)
 ** Function name:           drawNumber
 ** Description:             draw a long integer
 ***************************************************************************************/
-int TFT_ILI9341::drawNumber(long long_num, int poX, int poY, int font)
+int TFT_HX8347::drawNumber(long long_num, int poX, int poY, int font)
 {
   char str[12];
   ltoa(long_num, str, 10);
@@ -2089,7 +2089,7 @@ int TFT_ILI9341::drawNumber(long long_num, int poX, int poY, int font)
 ***************************************************************************************/
 // Adapted to assemble and print a string, this permits alignment relative to a datum
 // looks complicated but much more compact and actually faster than using print class
-int TFT_ILI9341::drawFloat(float floatNumber, int dp, int poX, int poY, int font)
+int TFT_HX8347::drawFloat(float floatNumber, int dp, int poX, int poY, int font)
 {
   char str[14];               // Array to contain decimal string
   uint8_t ptr = 0;            // Initialise pointer for array
@@ -2111,7 +2111,7 @@ int TFT_ILI9341::drawFloat(float floatNumber, int dp, int poX, int poY, int font
 
   floatNumber += rounding; // Round up or down
 
-  // For error put ... in string and return (all TFT_ILI9341 library fonts contain . character)
+  // For error put ... in string and return (all TFT_HX8347 library fonts contain . character)
   if (floatNumber >= 2147483647) {
     strcpy(str, "...");
     return drawString(str, poX, poY, font);
@@ -2353,7 +2353,7 @@ inline void spiWait12(void)
 
   ORIGINAL LIBRARY HEADER
 
-  This is our library for the Adafruit  ILI9341 Breakout and Shield
+  This is our library for the Adafruit  HX8347 Breakout and Shield
   ----> http://www.adafruit.com/products/1651
 
   Check out the links above for our tutorials and wiring diagrams

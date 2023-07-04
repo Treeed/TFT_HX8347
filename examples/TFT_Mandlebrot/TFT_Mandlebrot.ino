@@ -2,12 +2,12 @@
 
 // This will run slowly due to the large number of calculations per pixel
 
-#include <TFT_ILI9341.h> // Hardware-specific library
+#include <TFT_HX8347.h> // Hardware-specific library
 #include <SPI.h>
 
-TFT_ILI9341 tft = TFT_ILI9341();       // Invoke custom library
+TFT_HX8347 tft = TFT_HX8347();       // Invoke custom library
 
-#define ILI9341_GREY 0x7BEF
+#define HX8347_GREY 0x7BEF
 
 unsigned long runTime = 0;
 
@@ -30,7 +30,7 @@ void loop()
 {
   runTime = millis();
 
-  tft.fillScreen(ILI9341_BLACK);
+  tft.fillScreen(HX8347_BLACK);
   for (int px = 1; px < 320; px++)
   {
     for (int py = 0; py < 240; py++)

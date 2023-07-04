@@ -9,15 +9,15 @@
   Make sure the target and terminal have the same baud rate
   and serial stettings!
 
-  The sketch works with the ILI9341 TFT 240x320 display and
+  The sketch works with the HX8347 TFT 240x320 display and
   the called up libraries.
   
   The sketch uses the hardware scrolling feature of the
   display. Modification of this sketch may lead to problems
-  unless the ILI9341 data sheet has been understood!
+  unless the HX8347 data sheet has been understood!
 
-  Updated by Bodmer 21/7/16 for TFT_ILI9341 library:
-  https://github.com/Bodmer/TFT_ILI9341
+  Updated by Bodmer 21/7/16 for TFT_HX8347 library:
+  https://github.com/Bodmer/TFT_HX8347
   
   BSD license applies, all text above must be included in any
   redistribution
@@ -31,10 +31,10 @@
 // http://www.hobbytronics.co.uk/arduino-serial-buffer-size
 //
 
-#include <TFT_ILI9341.h> // Hardware-specific library
+#include <TFT_HX8347.h> // Hardware-specific library
 #include <SPI.h>
 
-TFT_ILI9341 tft = TFT_ILI9341();       // Invoke custom library
+TFT_HX8347 tft = TFT_HX8347();       // Invoke custom library
 
 // The scrolling area must be a integral multiple of TEXT_HEIGHT
 #define TEXT_HEIGHT 16 // Height of text to be printed and scrolled
@@ -136,7 +136,7 @@ int scroll_line() {
 // ##############################################################################################
 // We are using a hardware feature of the display, so we can only scroll in portrait orientation
 void setupScrollArea(uint16_t tfa, uint16_t bfa) {
-  tft.writecommand(ILI9341_VSCRDEF); // Vertical scroll definition
+  tft.writecommand(HX8347_VSCRDEF); // Vertical scroll definition
   tft.writedata(tfa >> 8);           // Top Fixed Area line count
   tft.writedata(tfa);
   tft.writedata((YMAX-tfa-bfa)>>8);  // Vertical Scrolling Area line count
@@ -149,7 +149,7 @@ void setupScrollArea(uint16_t tfa, uint16_t bfa) {
 // Setup the vertical scrolling start address pointer
 // ##############################################################################################
 void scrollAddress(uint16_t vsp) {
-  tft.writecommand(ILI9341_VSCRSADD); // Vertical scrolling pointer
+  tft.writecommand(HX8347_VSCRSADD); // Vertical scrolling pointer
   tft.writedata(vsp>>8);
   tft.writedata(vsp);
 }

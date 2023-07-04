@@ -22,8 +22,8 @@
 #include <TFT_FastPin.h>
 
 // Stop fonts being loaded multiple times
-#ifndef _TFT_ILI9341H_
-#define _TFT_ILI9341H_
+#ifndef _TFT_HX8347H_
+#define _TFT_HX8347H_
 
 // Only load the fonts defined in User_Setup.h (to save space)
 // Set flag so RLE rendering code is optionally compiled
@@ -147,25 +147,25 @@ swap(T& a, T& b) { T t = a; a = b; b = t; }
 #define TFT_PINK        0xF81F
 
 // Color definitions for backwards compatibility
-#define ILI9341_BLACK       0x0000      /*   0,   0,   0 */
-#define ILI9341_NAVY        0x000F      /*   0,   0, 128 */
-#define ILI9341_DARKGREEN   0x03E0      /*   0, 128,   0 */
-#define ILI9341_DARKCYAN    0x03EF      /*   0, 128, 128 */
-#define ILI9341_MAROON      0x7800      /* 128,   0,   0 */
-#define ILI9341_PURPLE      0x780F      /* 128,   0, 128 */
-#define ILI9341_OLIVE       0x7BE0      /* 128, 128,   0 */
-#define ILI9341_LIGHTGREY   0xC618      /* 192, 192, 192 */
-#define ILI9341_DARKGREY    0x7BEF      /* 128, 128, 128 */
-#define ILI9341_BLUE        0x001F      /*   0,   0, 255 */
-#define ILI9341_GREEN       0x07E0      /*   0, 255,   0 */
-#define ILI9341_CYAN        0x07FF      /*   0, 255, 255 */
-#define ILI9341_RED         0xF800      /* 255,   0,   0 */
-#define ILI9341_MAGENTA     0xF81F      /* 255,   0, 255 */
-#define ILI9341_YELLOW      0xFFE0      /* 255, 255,   0 */
-#define ILI9341_WHITE       0xFFFF      /* 255, 255, 255 */
-#define ILI9341_ORANGE      0xFD20      /* 255, 165,   0 */
-#define ILI9341_GREENYELLOW 0xAFE5      /* 173, 255,  47 */
-#define ILI9341_PINK        0xF81F
+#define HX8347_BLACK       0x0000      /*   0,   0,   0 */
+#define HX8347_NAVY        0x000F      /*   0,   0, 128 */
+#define HX8347_DARKGREEN   0x03E0      /*   0, 128,   0 */
+#define HX8347_DARKCYAN    0x03EF      /*   0, 128, 128 */
+#define HX8347_MAROON      0x7800      /* 128,   0,   0 */
+#define HX8347_PURPLE      0x780F      /* 128,   0, 128 */
+#define HX8347_OLIVE       0x7BE0      /* 128, 128,   0 */
+#define HX8347_LIGHTGREY   0xC618      /* 192, 192, 192 */
+#define HX8347_DARKGREY    0x7BEF      /* 128, 128, 128 */
+#define HX8347_BLUE        0x001F      /*   0,   0, 255 */
+#define HX8347_GREEN       0x07E0      /*   0, 255,   0 */
+#define HX8347_CYAN        0x07FF      /*   0, 255, 255 */
+#define HX8347_RED         0xF800      /* 255,   0,   0 */
+#define HX8347_MAGENTA     0xF81F      /* 255,   0, 255 */
+#define HX8347_YELLOW      0xFFE0      /* 255, 255,   0 */
+#define HX8347_WHITE       0xFFFF      /* 255, 255, 255 */
+#define HX8347_ORANGE      0xFD20      /* 255, 165,   0 */
+#define HX8347_GREENYELLOW 0xAFE5      /* 173, 255,  47 */
+#define HX8347_PINK        0xF81F
 
 typedef struct {
 	const unsigned char *chartbl;
@@ -218,11 +218,11 @@ const PROGMEM fontinfo fontdata [] = {
 
 
 // Class functions and variables
-class TFT_ILI9341 : public Print {
+class TFT_HX8347 : public Print {
 
  public:
 
-  TFT_ILI9341(int16_t _W = HX8347_TFTWIDTH, int16_t _H = HX8347_TFTHEIGHT);
+  TFT_HX8347(int16_t _W = HX8347_TFTWIDTH, int16_t _H = HX8347_TFTHEIGHT);
 
   void     init(void), begin(void), // Same - begin included for backwards compatibility
 
@@ -345,7 +345,7 @@ class TFT_ILI9341 : public Print {
 
   ORIGINAL LIBRARY HEADER
 
-  This is our library for the Adafruit  ILI9341 Breakout and Shield
+  This is our library for the Adafruit  HX8347 Breakout and Shield
   ----> http://www.adafruit.com/products/1651
 
   Check out the links above for our tutorials and wiring diagrams

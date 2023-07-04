@@ -1,15 +1,15 @@
 /*
- An example analogue meter using a ILI9341 TFT LCD screen
+ An example analogue meter using a HX8347 TFT LCD screen
 
  This example uses the hardware SPI only
  Needs Font 2 (also Font 4 if using large scale label)
 
  Make sure all the required fonts are loaded by editting the
- User_Setup.h file in the TFT_ILI9341 library folder.
+ User_Setup.h file in the TFT_HX8347 library folder.
 
  If using an UNO or Mega (ATmega328 or ATmega2560 processor) then for best
  performance use the F_AS_T option found in the User_Setup.h file in the
- TFT_ILI9341 library folder.
+ TFT_HX8347 library folder.
 
  The library uses the hardware SPI pins only:
    For UNO, Nano, Micro Pro ATmega328 based processors
@@ -45,10 +45,10 @@ Updated by Bodmer for variable meter size
 // Define meter size as 1 for tft.rotation(0) or 1.3333 for tft.rotation(1)
 #define M_SIZE 1.3333
 
-#include <TFT_ILI9341.h> // Hardware-specific library
+#include <TFT_HX8347.h> // Hardware-specific library
 #include <SPI.h>
 
-TFT_ILI9341 tft = TFT_ILI9341();       // Invoke custom library
+TFT_HX8347 tft = TFT_HX8347();       // Invoke custom library
 
 #define TFT_GREY 0x5AEB
 

@@ -4,8 +4,8 @@
 /*
  This sketch demonstrates loading images from arrays stored in program (FLASH) memory.
 
- Works with TFT_ILI9341 library here:
- https://github.com/Bodmer/TFT_ILI9341
+ Works with TFT_HX8347 library here:
+ https://github.com/Bodmer/TFT_HX8347
 
  This sketch does not use/need any fonts at all...
 
@@ -20,12 +20,12 @@
  A 32 x 32 icon can be drawn by a humble UNO in ~3.6 milliseconds, i.e. ~280 icons per second!
  A 320 x 240 screen can be completely filled with icons in about 270ms
 
- Code derived from ILI9341_due example
+ Code derived from HX8347_due example
 */
 
-#include <TFT_ILI9341.h> // Hardware-specific library
+#include <TFT_HX8347.h> // Hardware-specific library
 
-TFT_ILI9341 tft = TFT_ILI9341();       // Invoke custom library
+TFT_HX8347 tft = TFT_HX8347();       // Invoke custom library
 
 // Include the header files that contain the icons
 #include "alert.h"

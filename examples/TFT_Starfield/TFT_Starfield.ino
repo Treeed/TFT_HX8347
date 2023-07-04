@@ -4,10 +4,10 @@
 // which is about 15% faster than drawPixel()
 
 #include <SPI.h>
-#include <TFT_ILI9341.h>
+#include <TFT_HX8347.h>
 
 // Use hardware SPI
-TFT_ILI9341 tft = TFT_ILI9341();
+TFT_HX8347 tft = TFT_HX8347();
 
 // With 256 stars the update frame rate is about 45Hz
 #define NSTARS 256

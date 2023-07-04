@@ -1,4 +1,8 @@
-# TFT_ILI9341
+# TFT_HX8347
+This is a fork of Bodmer's TFT_ILI9341 library, adapted for the HX8347 Display. Some of the examples which used explicit ILI9341 commands are broken, but otherwise all library functions should work. I haven't retweaked all of the delays for the HX8347, but the library should still be about a magnitude faster than any other library for the HX8347. \
+For more details see the original description below.
+
+# Old readme: TFT_ILI9341
 
 An Arduino IDE compatible graphics and fonts library for AVR processors with a driver for the ILI9341 based TFT displays.
 
